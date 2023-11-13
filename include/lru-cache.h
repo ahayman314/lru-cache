@@ -18,29 +18,29 @@
         Value val;
     };
 
-    template<typename Key>
+    template<typename Key, typename Value>
     class LRUCache {
     public:
         LRUCache(size_t max_cache_size) : max_cache_size(max_cache_size) {}
-        int get(const Key& key);
-        void insert(const Key& key, const int& value);
+        Value get(const Key& key);
+        void insert(const Key& key, const Value& value);
     private:
         size_t max_cache_size;
-        std::list<Node<Key, int>> cacheList;
-        std::unordered_map<Key, typename std::list<Node<Key, int>>::iterator> cacheMap;
+        std::list<Node<Key, Value>> cacheList;
+        std::unordered_map<Key, typename std::list<Node<Key, Value>>::iterator> cacheMap;
         bool has(const Key& key);
         void removeLeastRecentlyUsed();
-        void insertFront(const Node<Key, int>& node);
+        void insertFront(const Node<Key, Value>& node);
         void moveToFront(const Key& key);
     };
 
-    template<typename Key>
-    bool LRUCache<Key>::has(const Key& key) {
+    template<typename Key, typename Value>
+    bool LRUCache<Key, Value>::has(const Key& key) {
         return cacheMap.find(key) != cacheMap.end();
     }
 
-    template<typename Key>
-    int LRUCache<Key>::get(const Key& key) {
+    template<typename Key, typename Value>
+    Value LRUCache<Key, Value>::get(const Key& key) {
         if (!has(key)) {
             throw KeyError("Invalid get. Key not found.");
         }
@@ -48,8 +48,8 @@
         return (*cacheMap[key]).val;
     }
 
-    template<typename Key>
-    void LRUCache<Key>::insert(const Key& key, const int& value) {
+    template<typename Key, typename Value>
+    void LRUCache<Key, Value>::insert(const Key& key, const Value& value) {
         if (has(key)) {
             (*cacheMap[key]).val = value;
             moveToFront(key);
@@ -62,21 +62,21 @@
         }
     }
 
-    template<typename Key>
-    void LRUCache<Key>::moveToFront(const Key& key) {
+    template<typename Key, typename Value>
+    void LRUCache<Key, Value>::moveToFront(const Key& key) {
         cacheList.splice(cacheList.begin(), cacheList, cacheMap[key]);
         cacheMap[key] = cacheList.begin();
     }
 
-    template<typename Key>
-    void LRUCache<Key>::removeLeastRecentlyUsed() {
+    template<typename Key, typename Value>
+    void LRUCache<Key, Value>::removeLeastRecentlyUsed() {
         const Key key = cacheList.back().key;
         cacheMap.erase(key);
         cacheList.pop_back();
     }
 
-    template<typename Key>
-    void LRUCache<Key>::insertFront(const Node<Key, int>& node) {
+    template<typename Key, typename Value>
+    void LRUCache<Key, Value>::insertFront(const Node<Key, Value>& node) {
         cacheList.push_front(node);
         cacheMap[node.key] = cacheList.begin();
     }
