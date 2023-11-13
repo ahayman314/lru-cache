@@ -1,4 +1,3 @@
-
 find_package(GTest MODULE REQUIRED)
 
 add_executable(tests 
