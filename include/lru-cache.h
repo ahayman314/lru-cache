@@ -11,11 +11,11 @@
         std::string error_message;
     };
 
-    template<typename Key>
+    template<typename Key, typename Value>
     struct Node {
-        Node(const Key& key, const int& val) : key(key), val(val) {}
+        Node(const Key& key, const Value& val) : key(key), val(val) {}
         Key key;
-        int val;
+        Value val;
     };
 
     template<typename Key>
@@ -26,11 +26,11 @@
         void insert(const Key& key, const int& value);
     private:
         size_t max_cache_size;
-        std::list<Node<Key>> cacheList;
-        std::unordered_map<Key, typename std::list<Node<Key>>::iterator> cacheMap;
+        std::list<Node<Key, int>> cacheList;
+        std::unordered_map<Key, typename std::list<Node<Key, int>>::iterator> cacheMap;
         bool has(const Key& key);
         void removeLeastRecentlyUsed();
-        void insertFront(const Node<Key>& node);
+        void insertFront(const Node<Key, int>& node);
         void moveToFront(const Key& key);
     };
 
@@ -76,7 +76,7 @@
     }
 
     template<typename Key>
-    void LRUCache<Key>::insertFront(const Node<Key>& node) {
+    void LRUCache<Key>::insertFront(const Node<Key, int>& node) {
         cacheList.push_front(node);
         cacheMap[node.key] = cacheList.begin();
     }
