@@ -58,3 +58,10 @@ TEST(LRUTest, ResizeToOne) {
     EXPECT_THROW(lru_cache.get("key1"), KeyError);
     EXPECT_EQ(lru_cache.get("key2"), 6);
 }
+
+TEST(LRUTest, Clear) {
+    LRUCache<std::string, int> lru_cache{1};
+    lru_cache.insert("key", 5);
+    lru_cache.clear();
+    EXPECT_THROW(lru_cache.get("key"), KeyError);
+}

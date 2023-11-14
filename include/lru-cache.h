@@ -25,6 +25,7 @@ public:
     Value get(const Key& key);
     void insert(const Key& key, const Value& value);
     void resize(size_t new_max_cache_size);
+    void clear();
 private:
     size_t max_cache_size;
     std::list<Node<Key, Value>> cache_list;
@@ -70,6 +71,11 @@ void LRUCache<Key, Value>::resize(size_t new_max_cache_size) {
         max_cache_size--;
     }
     max_cache_size = new_max_cache_size;
+}
+
+template<typename Key, typename Value>
+void LRUCache<Key, Value>::clear() {
+    resize(0);
 }
 
 template<typename Key, typename Value>
