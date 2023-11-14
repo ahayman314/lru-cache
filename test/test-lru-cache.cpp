@@ -42,3 +42,19 @@ TEST(LRUTest, StringSingleModify) {
     lru_cache.insert("key", 3);
     EXPECT_EQ(lru_cache.get("key"), 3);
 }
+
+TEST(LRUTest, ResizeToZero) {
+    LRUCache<std::string, int> lru_cache{1};
+    lru_cache.insert("key", 5);
+    lru_cache.resize(0);
+    EXPECT_THROW(lru_cache.get("key"), KeyError);
+}
+
+TEST(LRUTest, ResizeToOne) {
+    LRUCache<std::string, int> lru_cache{2};
+    lru_cache.insert("key1", 5);
+    lru_cache.insert("key2", 6);
+    lru_cache.resize(1);
+    EXPECT_THROW(lru_cache.get("key1"), KeyError);
+    EXPECT_EQ(lru_cache.get("key2"), 6);
+}
