@@ -21,7 +21,7 @@ struct Node {
 template<typename Key, typename Value>
 class LRUCache {
 public:
-    LRUCache(size_t max_cache_size) : max_cache_size(max_cache_size) {}
+    explicit LRUCache(size_t max_cache_size) : max_cache_size(max_cache_size) {}
     Value get(const Key& key);
     void insert(const Key& key, const Value& value);
     void resize(size_t new_max_cache_size);
