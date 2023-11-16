@@ -17,13 +17,6 @@ private:
 };
 
 template<typename Key, typename Value>
-struct Node {
-    Node(const Key& key, const Value& val) : key(key), val(val) {}
-    Key key;
-    Value val;
-};
-
-template<typename Key, typename Value>
 class LRUCache {
 public:
     explicit LRUCache(size_t max_cache_size) : max_cache_size_(max_cache_size) {}
@@ -39,13 +32,17 @@ public:
     size_t size() const;
     size_t maxSize() const;
 private:
-    using CacheListIterator = typename std::list<Node<Key, Value>>::iterator;
+    struct Node {
+        Node(const Key& key, const Value& val) : key(key), val(val) {}
+        Key key;
+        Value val;
+    };
+    using CacheListIterator = typename std::list<Node>::iterator;
     bool has(const Key& key);
     void removeLeastRecentlyUsed();
-    void insertFront(const Node<Key, Value>& node);
     void moveToFront(const Key& key);
     size_t max_cache_size_;
-    std::list<Node<Key, Value>> cache_list_;
+    std::list<Node> cache_list_;
     std::unordered_map<Key, CacheListIterator> cache_map_;
 };
 
@@ -73,7 +70,9 @@ void LRUCache<Key, Value>::insert(const Key& key, const Value& value) {
         if (cache_list_.size() == max_cache_size_) {
             removeLeastRecentlyUsed();
         }
-        insertFront(Node{key, value});
+        Node node{key, value};
+        cache_list_.push_front(node);
+        cache_map_[node.key] = cache_list_.begin();
     }
 }
 
@@ -112,12 +111,6 @@ void LRUCache<Key, Value>::removeLeastRecentlyUsed() {
     const Key key = cache_list_.back().key;
     cache_map_.erase(key);
     cache_list_.pop_back();
-}
-
-template<typename Key, typename Value>
-void LRUCache<Key, Value>::insertFront(const Node<Key, Value>& node) {
-    cache_list_.push_front(node);
-    cache_map_[node.key] = cache_list_.begin();
 }
 
 } // namespace lru_cache
