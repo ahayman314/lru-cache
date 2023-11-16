@@ -3,6 +3,8 @@
 #include <string>
 #include <exception>
 
+namespace lru_cache {
+
 class KeyError : std::exception {
 public:
     KeyError(const std::string& error_message) : error_message(error_message) {}
@@ -108,3 +110,5 @@ void LRUCache<Key, Value>::insertFront(const Node<Key, Value>& node) {
     cache_list.push_front(node);
     cache_map[node.key] = cache_list.begin();
 }
+
+} // namespace lru_cache

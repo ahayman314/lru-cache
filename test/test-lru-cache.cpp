@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include "../include/lru-cache.h"
 
+using namespace lru_cache;
+
 TEST(LRUTest, IntSingleInsert) {
     LRUCache<int, int> lru_cache{1};
     lru_cache.insert(4, 5);
