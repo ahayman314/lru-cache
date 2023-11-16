@@ -1,7 +1,10 @@
-#include <unordered_map>
+#ifndef LRU_CACHE_H_
+#define LRU_CACHE_H
+
+#include <exception>
 #include <list>
 #include <string>
-#include <exception>
+#include <unordered_map>
 
 namespace lru_cache {
 
@@ -112,3 +115,5 @@ void LRUCache<Key, Value>::insertFront(const Node<Key, Value>& node) {
 }
 
 } // namespace lru_cache
+
+#endif // LRU_CACHE_H
