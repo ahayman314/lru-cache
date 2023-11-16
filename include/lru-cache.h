@@ -10,10 +10,10 @@ namespace lru_cache {
 
 class KeyError : std::exception {
 public:
-    KeyError(const std::string& error_message) : error_message(error_message) {}
-    const char* what() const noexcept override { return error_message.c_str(); }
+    KeyError(const std::string& error_message) : error_message_(error_message) {}
+    const char* what() const noexcept override { return error_message_.c_str(); }
 private:
-    std::string error_message;
+    std::string error_message_;
 };
 
 template<typename Key, typename Value>
@@ -27,7 +27,7 @@ public:
     ~LRUCache() = default;
     Value get(const Key& key);
     void insert(const Key& key, const Value& value);
-    void resize(size_t new_max_cache_size);
+    void resize(const size_t new_max_cache_size);
     void clear();
     size_t size() const;
     size_t maxSize() const;
@@ -54,7 +54,7 @@ bool LRUCache<Key, Value>::has(const Key& key) {
 template<typename Key, typename Value>
 Value LRUCache<Key, Value>::get(const Key& key) {
     if (!has(key)) {
-        throw KeyError("Invalid get. Key not found.");
+        throw KeyError("Cache miss. Key not found.");
     }
     moveToFront(key);
     return (*cache_map_[key]).val;
@@ -77,7 +77,7 @@ void LRUCache<Key, Value>::insert(const Key& key, const Value& value) {
 }
 
 template<typename Key, typename Value>
-void LRUCache<Key, Value>::resize(size_t new_max_cache_size) {
+void LRUCache<Key, Value>::resize(const size_t new_max_cache_size) {
     while (max_cache_size_ > new_max_cache_size) {
         removeLeastRecentlyUsed();
         max_cache_size_--;
