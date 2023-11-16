@@ -1,0 +1,39 @@
+name: LRU Cache Build and Test
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Conan and CMake
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          pip3 install conan==1.60.0
+          sudo apt-get install -y cmake
+
+      - name: Create Build Directory
+        run: mkdir build
+
+      - name: Conan Install
+        run: conan install ..
+        working-directory: build
+
+      - name: Conan Build
+        run: conan build ..
+        working-directory: build
+
+      - name: Run Unit Tests
+        run: ./tests
+        working-directory: build
