@@ -34,13 +34,14 @@ public:
     size_t size() const;
     size_t maxSize() const;
 private:
-    size_t max_cache_size_;
-    std::list<Node<Key, Value>> cache_list_;
-    std::unordered_map<Key, typename std::list<Node<Key, Value>>::iterator> cache_map_;
+    using CacheListIterator = typename std::list<Node<Key, Value>>::iterator;
     bool has(const Key& key);
     void removeLeastRecentlyUsed();
     void insertFront(const Node<Key, Value>& node);
     void moveToFront(const Key& key);
+    size_t max_cache_size_;
+    std::list<Node<Key, Value>> cache_list_;
+    std::unordered_map<Key, CacheListIterator> cache_map_;
 };
 
 template<typename Key, typename Value>
