@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "Linux",
+            "name": "Windows",
             "includePath": [
                 "${workspaceFolder}/include",
                 "~/.conan/data/gtest/1.13.0/**"
@@ -12,6 +12,20 @@
                 "SOME_DEF=5"
             ],
             "intelliSenseMode": "msvc-x64",
+            "cStandard": "c11"
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/include",
+                "~/.conan/data/gtest/1.13.0/**"
+            ],
+            "compilerPath": "/usr/bin/gcc",
+            "cppStandard": "c++14",
+            "defines": [
+                "SOME_DEF=5"
+            ],
+            "intelliSenseMode": "gcc-x64",
             "cStandard": "c11"
         }
     ],

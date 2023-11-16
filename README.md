@@ -44,6 +44,9 @@ lru_cache.resize(5);
 lru_cache.clear();
 ```
 
+### Development
+For local development, use the included VSCode development container for a standardized environment.
+
 ### Design
 The 'get' and 'insert' operations both have O(1) time complexity by using an `std::list` and `std::unordered_map`.
 

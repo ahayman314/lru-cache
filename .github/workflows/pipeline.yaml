@@ -26,6 +26,9 @@ jobs:
       - name: Create Build Directory
         run: mkdir build
 
+      - name: Fix Conan Profile
+        run: conan profile update settings.compiler.libcxx=libstdc++11 default
+
       - name: Conan Install
         run: conan install ..
         working-directory: build
