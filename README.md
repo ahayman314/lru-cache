@@ -32,7 +32,7 @@ try {
     int val1 = lru_cache.get("key1");
 }
 catch (lru_cache::KeyError &e) {
-    std::cout << "Cache error for 'key1': " << e << std::endl;
+    std::cout << "Cache error for 'key1': " << e.what() << std::endl;
 }
 
 // Size
