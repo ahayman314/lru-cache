@@ -26,7 +26,7 @@ struct Node {
 template<typename Key, typename Value>
 class LRUCache {
 public:
-    explicit LRUCache(size_t max_cache_size) : max_cache_size(max_cache_size) {}
+    explicit LRUCache(size_t max_cache_size) : max_cache_size_(max_cache_size) {}
     Value get(const Key& key);
     void insert(const Key& key, const Value& value);
     void resize(size_t new_max_cache_size);
@@ -34,9 +34,9 @@ public:
     size_t size() const;
     size_t maxSize() const;
 private:
-    size_t max_cache_size;
-    std::list<Node<Key, Value>> cache_list;
-    std::unordered_map<Key, typename std::list<Node<Key, Value>>::iterator> cache_map;
+    size_t max_cache_size_;
+    std::list<Node<Key, Value>> cache_list_;
+    std::unordered_map<Key, typename std::list<Node<Key, Value>>::iterator> cache_map_;
     bool has(const Key& key);
     void removeLeastRecentlyUsed();
     void insertFront(const Node<Key, Value>& node);
@@ -45,7 +45,7 @@ private:
 
 template<typename Key, typename Value>
 bool LRUCache<Key, Value>::has(const Key& key) {
-    return cache_map.find(key) != cache_map.end();
+    return cache_map_.find(key) != cache_map_.end();
 }
 
 template<typename Key, typename Value>
@@ -54,17 +54,17 @@ Value LRUCache<Key, Value>::get(const Key& key) {
         throw KeyError("Invalid get. Key not found.");
     }
     moveToFront(key);
-    return (*cache_map[key]).val;
+    return (*cache_map_[key]).val;
 }
 
 template<typename Key, typename Value>
 void LRUCache<Key, Value>::insert(const Key& key, const Value& value) {
     if (has(key)) {
-        (*cache_map[key]).val = value;
+        (*cache_map_[key]).val = value;
         moveToFront(key);
     }
     else {
-        if (cache_list.size() == max_cache_size) {
+        if (cache_list_.size() == max_cache_size_) {
             removeLeastRecentlyUsed();
         }
         insertFront(Node{key, value});
@@ -73,11 +73,11 @@ void LRUCache<Key, Value>::insert(const Key& key, const Value& value) {
 
 template<typename Key, typename Value>
 void LRUCache<Key, Value>::resize(size_t new_max_cache_size) {
-    while (max_cache_size > new_max_cache_size) {
+    while (max_cache_size_ > new_max_cache_size) {
         removeLeastRecentlyUsed();
-        max_cache_size--;
+        max_cache_size_--;
     }
-    max_cache_size = new_max_cache_size;
+    max_cache_size_ = new_max_cache_size;
 }
 
 template<typename Key, typename Value>
@@ -87,31 +87,31 @@ void LRUCache<Key, Value>::clear() {
 
 template<typename Key, typename Value>
 size_t LRUCache<Key, Value>::size() const {
-    return cache_list.size();
+    return cache_list_.size();
 }
 
 template<typename Key, typename Value>
 size_t LRUCache<Key, Value>::maxSize() const {
-    return max_cache_size;
+    return max_cache_size_;
 }
 
 template<typename Key, typename Value>
 void LRUCache<Key, Value>::moveToFront(const Key& key) {
-    cache_list.splice(cache_list.begin(), cache_list, cache_map[key]);
-    cache_map[key] = cache_list.begin();
+    cache_list_.splice(cache_list_.begin(), cache_list_, cache_map_[key]);
+    cache_map_[key] = cache_list_.begin();
 }
 
 template<typename Key, typename Value>
 void LRUCache<Key, Value>::removeLeastRecentlyUsed() {
-    const Key key = cache_list.back().key;
-    cache_map.erase(key);
-    cache_list.pop_back();
+    const Key key = cache_list_.back().key;
+    cache_map_.erase(key);
+    cache_list_.pop_back();
 }
 
 template<typename Key, typename Value>
 void LRUCache<Key, Value>::insertFront(const Node<Key, Value>& node) {
-    cache_list.push_front(node);
-    cache_map[node.key] = cache_list.begin();
+    cache_list_.push_front(node);
+    cache_map_[node.key] = cache_list_.begin();
 }
 
 } // namespace lru_cache
