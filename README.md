@@ -24,6 +24,5 @@ Currently, I am prototyping some the LRU Cache
 
 ### Future Steps
 - Refine CMake and Conan
-- Add GTest unit tests
 - Add CI/CD with GitHub actions
 - Add dev container for consistent development experience
