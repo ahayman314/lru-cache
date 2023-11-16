@@ -1,7 +1,7 @@
 ### LRU Cache
 A header-only LRU cache with C++11.
 
-In addition to standard LRU cache implementations, this cache allows cache re-sizing.
+In addition to standard LRU cache implementations, this cache allows re-sizing.
 
 In the future, thread-safety is another feature that may be supproted. 
 
