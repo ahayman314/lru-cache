@@ -51,11 +51,3 @@ For local development, use the included VSCode development container for a stand
 The 'get' and 'insert' operations both have O(1) time complexity by using an `std::list` and `std::unordered_map`.
 
 The `std::list` contains the key-value pairs, while the `std::unordered_map` contains keys mapping to iterators in the list.
-
-### In-Progress
-Currently, I am prototyping some the LRU Cache
-
-### Future Steps
-- Refine CMake and Conan
-- Add CI/CD with GitHub actions
-- Add dev container for consistent development experience
